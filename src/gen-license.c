@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include <time.h>
 
 #include "gen-license.h"
-
 
 int main() {
   // ask for which license
@@ -16,26 +14,35 @@ int main() {
 
   char const *license_text = get_license_stub(l);
 
-  char *name = ask_user("Enter your full name: ", "");
+  char prompt[256] = {};
+
+  char *gitname = git_username();
+
+  if (gitname != NULL) {
+    sprintf(prompt, "Enter your name (%s): ", gitname);
+  } else {
+    strcpy(prompt, "Enter your name: ");
+  }
+
+  char *name = ask_user(prompt, gitname);
+  free(gitname);
 
   // year stuff
   char year[5] = {};
   sprintf(year, "%d", current_year());
-  char prompt[128] ={};
   sprintf(prompt, "Enter year (%s): ", year);
   char *year_input = ask_user(prompt, year);
-  char* complete_license = replace_stubs(license_text, name, year_input);
 
+  char *complete_license = replace_stubs(license_text, name, year_input);
+  free(year_input);
+  free(name);
 
   write_license(complete_license);
-
-  free(year_input);
   free(complete_license);
-  free(name);
 }
 
-void write_license(const char *license){
-  FILE* license_file = fopen("LICENSE", "w");
+void write_license(const char *license) {
+  FILE *license_file = fopen("LICENSE", "w");
   if (license_file == NULL) {
     puts("Error: Could not open LICENSE file");
     return;
@@ -44,71 +51,69 @@ void write_license(const char *license){
   fclose(license_file);
 }
 
-char* replace_stubs(char const *input, const char *name, const char *year) {
-     // copy the input to a new buffer
-     char *input_copy = malloc(strlen(input) + 1);
-     strcpy(input_copy, input);
+char *replace_stubs(char const *input, const char *name, const char *year) {
+  // copy the input to a new buffer
+  char *input_copy = malloc(strlen(input) + 1);
+  strcpy(input_copy, input);
 
-    char *pos;
+  char *pos;
 
-    while ((pos = strstr(input_copy, NAME_STUB)) != NULL) {
-        // Calculate the lengths
-        size_t nameLen = strlen(NAME_STUB);
-        size_t replaceLen = strlen(name);
-        size_t remainingLen = strlen(pos + nameLen);
+  while ((pos = strstr(input_copy, NAME_STUB)) != NULL) {
+    // Calculate the lengths
+    size_t nameLen = strlen(NAME_STUB);
+    size_t replaceLen = strlen(name);
+    size_t remainingLen = strlen(pos + nameLen);
 
-        // Replace [name] with the provided name
-        memmove(pos + replaceLen, pos + nameLen, remainingLen + 1);
-        memcpy(pos, name, replaceLen);
-    }
+    // Replace [name] with the provided name
+    memmove(pos + replaceLen, pos + nameLen, remainingLen + 1);
+    memcpy(pos, name, replaceLen);
+  }
 
-    while ((pos = strstr(input_copy, YEAR_STUB)) != NULL) {
-        // Calculate the lengths
-        size_t yearLen = strlen(YEAR_STUB);
-        size_t replaceLen = strlen(year);
-        size_t remainingLen = strlen(pos + yearLen);
+  while ((pos = strstr(input_copy, YEAR_STUB)) != NULL) {
+    // Calculate the lengths
+    size_t yearLen = strlen(YEAR_STUB);
+    size_t replaceLen = strlen(year);
+    size_t remainingLen = strlen(pos + yearLen);
 
-        // Replace [year] with the provided year
-        memmove(pos + replaceLen, pos + yearLen, remainingLen + 1);
-        memcpy(pos, year, replaceLen);
-    }
+    // Replace [year] with the provided year
+    memmove(pos + replaceLen, pos + yearLen, remainingLen + 1);
+    memcpy(pos, year, replaceLen);
+  }
 
-    return input_copy;
+  return input_copy;
 }
 
 // fuck it heap allocated it is
 char *ask_user(char *prompt, char *fallback) {
-  char *ansbuf = malloc(128);
-  memset(ansbuf, '\0', 128);
+  char ansbuf[128] = {};
 
   printf("%s", prompt);
 
-  int i = 0;
-  char c = '\0';
-  while ((c = getchar()) != '\n' && i < 128 - 1) {
-    ansbuf[i++] = c;
-  }
-  if (i == 0) {
-    strcpy(ansbuf, fallback);
+  fgets(ansbuf, 128,stdin);
+
+  int len = strlen(ansbuf);
+  if (len <= 1){
+    return strdup(fallback);
   }
 
-  return ansbuf;
+  return strdup(ansbuf);
 }
 
-int current_year(){
-    // Declare a tm structure to hold the current date and time
-    struct tm *current_time;
+int current_year() {
+  // Declare a tm structure to hold the current date and time
+  struct tm *current_time;
 
-    // Get the current time
-    time_t now;
-    time(&now);
+  // Get the current time
+  time_t now;
+  time(&now);
 
-    // Use localtime to convert the current time to a tm structure
-    current_time = localtime(&now);
+  // Use localtime to convert the current time to a tm structure
+  current_time = localtime(&now);
 
-    // Extract the current year
-    int year = current_time->tm_year + 1900;
+  // Extract the current year
+  int year = current_time->tm_year + 1900;
 
-
-    return year;
+  return year;
 }
+
+#define MAX_USERNAME_LENGTH 100

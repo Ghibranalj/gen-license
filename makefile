@@ -1,5 +1,5 @@
 BIN=$(shell basename $(CURDIR))
-CFLAGS=-Wall -Wextra -std=c11 -g -Isrc
+CFLAGS=-Wall -Wextra -std=c11 -g -Isrc -std=gnu17
 
 C_FILES=$(wildcard src/*.c)
 O_FILES=$(patsubst src/%.c, obj/%.o, $(C_FILES))
