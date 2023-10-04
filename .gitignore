@@ -1,2 +1,4 @@
 /gen-license
 /obj/
+/compile_commands.json
+/.cache/
