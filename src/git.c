@@ -34,5 +34,5 @@ static char *execute_command(const char *command) {
 }
 
 char* git_username(){
-    return execute_command("git config user.name");
+    return execute_command("git config user.name 2>/dev/null");
 }
