@@ -1,5 +1,5 @@
-#ifndef MIT_H_
-#define MIT_H_
+#ifndef LICENSES_H_
+#define LICENSES_H_
 
 static char const *MIT = "MIT License\n\n"
                          "Copyright (c) [year] [name]\n\n\n"
@@ -19,4 +19,4 @@ static char const *MIT = "MIT License\n\n"
                          "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
                          "SOFTWARE.";
 
-#endif // MIT_H_
+#endif // LICENSES_H_
