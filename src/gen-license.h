@@ -9,6 +9,7 @@
 char *ask_user(char *prompt, char *fallback);
 char* replace_stubs(char const *input, const char *name, const char *year);
 int current_year();
+void write_license(const char *license);
 
 static char const *LICENSES = "Available Licenses:\n"
                               "1) MIT\n";

@@ -27,11 +27,21 @@ int main() {
   char* complete_license = replace_stubs(license_text, name, year_input);
 
 
-  puts(complete_license);
+  write_license(complete_license);
 
   free(year_input);
   free(complete_license);
   free(name);
+}
+
+void write_license(const char *license){
+  FILE* license_file = fopen("LICENSE", "w");
+  if (license_file == NULL) {
+    puts("Error: Could not open LICENSE file");
+    return;
+  }
+  fputs(license, license_file);
+  fclose(license_file);
 }
 
 char* replace_stubs(char const *input, const char *name, const char *year) {
