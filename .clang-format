@@ -1,0 +1,6 @@
+﻿---
+ColumnLimit: '1024'
+ConstructorInitializerIndentWidth: '4'
+ContinuationIndentWidth: '4'
+
+...

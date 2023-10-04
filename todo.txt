@@ -1,0 +1,13 @@
+these licenses are needed:
+- Apache 2.0
+- BSD 2 'simplified'
+- BSD 3 'new or revised'
+- Boost
+- Cretive Commmons Zero 1.0
+- Eclipse Public License
+- GPL2
+- GPL3
+- LGPL2
+- MIT
+- MPL 2
+- Unlicense
