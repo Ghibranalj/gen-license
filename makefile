@@ -15,7 +15,7 @@ run: $(BIN)
 
 headers: $(LICENSE_HEADERS)
 
-$(BIN): $(O_FILES) $(LICENSE_HEADER)
+$(BIN):  $(LICENSE_HEADERS) $(O_FILES)
 	$(CC) $(CFLAGS) -o $@ $^
 
 obj/%.o: src/%.c $(H_FILES) obj
