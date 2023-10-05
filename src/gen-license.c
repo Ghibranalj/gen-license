@@ -62,14 +62,13 @@ void write_license(const char *license) {
     char ansbuf[128] = {};
     printf("LICENSE file already exists. Overwrite? (y/N): ");
     fgets(ansbuf, 128, stdin);
+    fclose(license_file);
 
     if (ansbuf[0] != 'y' && ansbuf[0] != 'Y') {
-      fclose(license_file);
       puts("Aborting");
       return;
     }
   }
-  fclose(license_file);
 
   license_file = fopen(filename, "w");
   if (license_file == NULL) {

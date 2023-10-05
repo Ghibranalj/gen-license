@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define MAX_USERNAME_LENGTH 100
@@ -28,7 +29,11 @@ static char *execute_command(const char *command) {
     }
 
     // Close the file pointer
-    pclose(fp);
+    int exit = pclose(fp);
+    if (exit != 0){
+        free(result);
+        return NULL;
+    }
 
     return result;
 }
