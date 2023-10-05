@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_USERNAME_LENGTH 100
 
 // Function to execute a command and capture its output
 static char *execute_command(const char *command) {
-    char buffer[MAX_USERNAME_LENGTH];
+    char buffer[256];
     char *result = NULL;
 
     // Open the command for reading
