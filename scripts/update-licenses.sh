@@ -3,8 +3,8 @@
 # Define the JSON data as a here document
 json_data=$(curl -sf  https://api.github.com/licenses)
 if [ $? -ne 0 ]; then
-    echo "HTTP request failed"
-    echo "Maybe rate limited?"
+    echo "HTTP request failed" >&2
+    echo "Maybe rate limited?" >&2
     exit 1
 fi
 
