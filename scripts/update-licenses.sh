@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # Define the JSON data as a here document
-json_data=$(curl -s  https://api.github.com/licenses)
+json_data=$(curl -sf  https://api.github.com/licenses)
+if [ $? -ne 0 ]; then
+    echo "HTTP request failed"
+    echo "Maybe rate limited?"
+    exit 1
+fi
 
 # Function to fetch the body content from a URL
 fetch_body() {
