@@ -10,7 +10,7 @@ int main() {
   // ask for which license
   print_license();
   char *license = ask_user("Select License: ", "");
-  int sel = atoi(license)-1;
+  int sel = atoi(license) - 1;
   free(license);
 
   if (sel < 0 || sel > (int)(sizeof(licenses) / sizeof(licenses[0]))) {
@@ -46,7 +46,32 @@ int main() {
 }
 
 void write_license(const char *license) {
-  FILE *license_file = fopen("LICENSE", "w");
+  char filename[256];
+  char *git_root = git_root_dir();
+  if (git_root == NULL) {
+    strcpy(filename, "LICENSE");
+  } else {
+    strcpy(filename, git_root);
+    strcat(filename, "/LICENSE");
+    free(git_root);
+  }
+
+  FILE *license_file = fopen(filename, "r");
+
+  if (license_file != NULL) {
+    char ansbuf[128] = {};
+    printf("LICENSE file already exists. Overwrite? (y/N): ");
+    fgets(ansbuf, 128, stdin);
+
+    if (ansbuf[0] != 'y' && ansbuf[0] != 'Y') {
+      fclose(license_file);
+      puts("Aborting");
+      return;
+    }
+  }
+  fclose(license_file);
+
+  license_file = fopen(filename, "w");
   if (license_file == NULL) {
     puts("Error: Could not open LICENSE file");
     return;

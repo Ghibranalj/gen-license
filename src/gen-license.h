@@ -10,5 +10,6 @@ int current_year();
 void write_license(const char *license);
 char *git_username();
 void print_license();
+char* git_root_dir();
 
 #endif // GEN_LICENSE_H
