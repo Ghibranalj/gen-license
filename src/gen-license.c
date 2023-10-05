@@ -4,20 +4,23 @@
 #include <time.h>
 
 #include "gen-license.h"
+#include "licenses.h"
 
 int main() {
   // ask for which license
-  puts(LICENSES);
+  print_license();
   char *license = ask_user("Select License: ", "");
-  int l = atoi(license);
+  int sel = atoi(license)-1;
   free(license);
 
-  char const *license_text = get_license_stub(l);
+  if (sel < 0 || sel > (int)(sizeof(licenses) / sizeof(licenses[0]))) {
+    puts("Error: Invalid license");
+    return 1;
+  }
+  char *license_text = licenses[sel].body;
 
   char prompt[256] = {};
-
   char *gitname = git_username();
-
   if (gitname != NULL) {
     sprintf(prompt, "Enter your name (%s): ", gitname);
   } else {
@@ -34,6 +37,7 @@ int main() {
   char *year_input = ask_user(prompt, year);
 
   char *complete_license = replace_stubs(license_text, name, year_input);
+
   free(year_input);
   free(name);
 
@@ -89,10 +93,10 @@ char *ask_user(char *prompt, char *fallback) {
 
   printf("%s", prompt);
 
-  fgets(ansbuf, 128,stdin);
+  fgets(ansbuf, 128, stdin);
 
   int len = strlen(ansbuf);
-  if (len <= 1){
+  if (len <= 1) {
     return strdup(fallback);
   }
 
@@ -116,4 +120,12 @@ int current_year() {
   return year;
 }
 
-#define MAX_USERNAME_LENGTH 100
+void print_license() {
+  puts("Available licenses: ");
+  // loop throgh licenses
+
+  for (int i = 0; i < (int)(sizeof(licenses) / sizeof(License)); i++) {
+    char *desc = licenses[i].name;
+    printf("%d) %s\n", i + 1, desc);
+  }
+}
