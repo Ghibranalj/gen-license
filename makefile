@@ -33,3 +33,10 @@ vars:
 
 src/licenses.h: scripts/update-licenses.sh
 	./scripts/update-licenses.sh > $@
+
+# Install
+.PHONY: install remove
+install: $(BIN)
+	install -Dm755 $(BIN) $(DESTDIR)/usr/bin/$(BIN)
+remove:
+	rm -f $(DESTDIR)/usr/bin/$(BIN)
