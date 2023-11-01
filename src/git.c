@@ -5,7 +5,6 @@
 
 static char *git_command(const char *command) {
     char buffer[256];
-    char *result = NULL;
 
     FILE *fp = popen(command, "r");
     if (fp == NULL) {

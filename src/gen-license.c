@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
+
 
 #include "gen-license.h"
 #include "licenses.h"
@@ -72,7 +74,7 @@ void write_license(const char *license) {
 
   license_file = fopen(filename, "w");
   if (license_file == NULL) {
-    puts("Error: Could not open LICENSE file");
+    printf("Error: could not open %s: %s\n", filename, strerror(errno));
     return;
   }
   fputs(license, license_file);
