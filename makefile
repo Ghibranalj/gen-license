@@ -11,8 +11,8 @@ all: $(BIN)
 run: $(BIN)
 	./$(BIN)
 
-$(BIN):  src/licenses.h $(O_FILES)
-	$(CC) $(CFLAGS) -o $@ $^
+$(BIN): src/licenses.h $(O_FILES)
+	$(CC) $(CFLAGS) -o $@ $(O_FILES)
 
 obj/%.o: src/%.c $(H_FILES) obj
 	$(CC) $(CFLAGS) -c -o $@ $<
